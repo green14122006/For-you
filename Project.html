@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hi Friends Explosion</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: sans-serif;
+    }
+
+    #text {
+      color: white;
+      font-size: 50px;
+      font-weight: bold;
+      position: absolute;
+      transition: transform 0.3s;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    #image {
+      display: none;
+      max-width: 90vw;
+      max-height: 90vh;
+      border: 5px solid white;
+      box-shadow: 0 0 30px white;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div id="text">Hi Friends</div>
+  <img id="image" src="project.jpg" alt="Project Image">
+
+  <script>
+    const text = document.getElementById('text');
+    const image = document.getElementById('image');
+
+    function explodeText() {
+      const rect = text.getBoundingClientRect();
+      const particles = [];
+
+      for (let i = 0; i < 150; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        document.body.appendChild(p);
+        p.style.left = `${rect.left + rect.width / 2}px`;
+        p.style.top = `${rect.top + rect.height / 2}px`;
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 150;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+
+        p.animate([
+          { transform: 'translate(0, 0)', opacity: 1 },
+          { transform: `translate(${x}px, ${y}px)`, opacity: 0 }
+        ], {
+          duration: 1000 + Math.random() * 500,
+          easing: 'ease-out'
+        });
+
+        setTimeout(() => p.remove(), 1500);
+      }
+
+      text.style.display = 'none';
+      setTimeout(() => image.style.display = 'block', 1200);
+    }
+
+    // Start animation after 2 seconds
+    setTimeout(explodeText, 2000);
+  </script>
+</body>
+</html>
